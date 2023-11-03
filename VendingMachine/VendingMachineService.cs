@@ -147,8 +147,8 @@ namespace VendingMachine
         
             public Dictionary<int, int> EndTransaction()
         {
-            change = moneyPool -= cost;
-            Console.WriteLine($"The total amount you inserted is: {addedMoney += amount}, The change is: {change}");
+            change = moneyPool - cost;
+            Console.WriteLine($"The total amount you inserted is: {moneyPool}, The change is: {change}");
             return new Dictionary<int, int>();
 
         }
