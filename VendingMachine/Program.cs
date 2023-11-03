@@ -29,17 +29,15 @@ public class Program
         vendingMachineService.Purchase();
 
        
-
-
-            Console.WriteLine("\n----- Order Details-----");
+        Console.WriteLine("\n----- Order Details-----");
         vendingMachineService.ShowOrder();
 
-        Console.WriteLine("----- Your receipt-----");
+        Console.WriteLine("\n----- Your receipt-----");
         Console.WriteLine("");
         vendingMachineService.EndTransaction();
 
         Console.WriteLine("Please take the change.");
-        Console.WriteLine("***Thank You***");
+        Console.WriteLine("       ***Thank You***     ");
     }
 
 }

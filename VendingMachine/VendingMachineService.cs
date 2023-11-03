@@ -29,7 +29,6 @@ namespace VendingMachine
                     Drink drink = new Drink(choice, "Water", 15, 250);
                     products.Add(drink);
                     Console.WriteLine(drink.Examine());
-                    Console.WriteLine(drink.Use());
 
                 }
                 else if (choice == 2)
@@ -37,7 +36,6 @@ namespace VendingMachine
                     Chocolate chocolate = new Chocolate(choice, "Bounty", 10, 150);
                     products.Add(chocolate);
                     Console.WriteLine(chocolate.Examine());
-                    Console.WriteLine(chocolate.Use());
 
                 }
                 else if (choice == 3)
@@ -45,20 +43,17 @@ namespace VendingMachine
                     Chips chips = new Chips(3, "Pringles", 45, "Cheese");
                     products.Add(chips);
                     Console.WriteLine(chips.Examine());
-                    Console.WriteLine(chips.Use());
                 }
                 Console.WriteLine("Enter 1 if you want to buy more products. Enter 0 if you want to check out.\n");
                 addProduct = Convert.ToInt32(Console.ReadLine());
-               
             }
+
             while (addProduct == 1);
-                    
             return null;
         }
 
        public  List<string> ShowAll() 
-        {
-            
+       {           
              List<string> productInfo = new List<string>();
 
                 productInfo.Add("1.Water");
@@ -72,7 +67,7 @@ namespace VendingMachine
         }
 
          public  string Details(int Id)
-            {
+          {
             Product product = products.Find(p => p.Id == Id);
 
             Console.WriteLine("To show the details of a product enter its ID.");
@@ -94,11 +89,10 @@ namespace VendingMachine
             }
             
             return product?.Examine();
-            }
+          }
 
-       public void InsertMoney()
-        {
-            
+         public void InsertMoney()
+         {            
                 Console.WriteLine($"The machine accepts only the followin denomination: \n" + "1, 5, 10, 20, 50, 100, 500, 1000");
             do
             {
@@ -119,39 +113,44 @@ namespace VendingMachine
             while (addedMoney == 1);
             moneyPool += addedMoney;
             Console.WriteLine($"The total amount is: {moneyPool} SEK \n" );
-        }
+         }
 
-        public List<string> ShowOrder()
-        {
-            List<string> orderInfo = new List<string>();
-            Console.WriteLine("\n Your order is as following: ");
+         public List<string> ShowOrder()
+         {
+            if (moneyPool >= cost)
+            { List<string> orderInfo = new List<string>();
+                Console.WriteLine("\n Your order is as following: ");
 
-            foreach (Product product in products)
+                foreach (Product product in products)
+                {
+                    orderInfo.Add($"{product.Id} - {product.Name} - {product.Price}SEK");
+                    Console.WriteLine($"Product ID: {product.Id}, Product Name: {product.Name}, Price: {product.Price} SEK");
+                    Console.WriteLine(product.Use());
+                    cost += product.Price;
+
+                }
+
+                Console.WriteLine($"The total price of the products is: {cost} SEK");
+            }
+             else
             {
-                orderInfo.Add($"{product.Id} - {product.Name} - {product.Price}SEK");
-                Console.WriteLine($"Product ID: {product.Id}, Product Name: {product.Name}, Price: {product.Price} SEK");
-                cost += product.Price;
+                throw new Exception("Insufficient funds");
 
             }
+            return null;
+           
+         }
+             
+         public Dictionary<int, int> EndTransaction()
+         {      
+          change = moneyPool - cost;
+          Console.WriteLine($"The total amount you inserted is: {moneyPool}, The change is: {change}");
+          return new Dictionary<int, int>();
 
-
-            Console.WriteLine($"The total price of the products is: {cost} SEK");
-
-            return orderInfo;
-        }
-
-        public int GetAmount ()
+         }   
+        public int GetTotalAmount()
         {
             return moneyPool;
         }
-        
-            public Dictionary<int, int> EndTransaction()
-        {
-            change = moneyPool - cost;
-            Console.WriteLine($"The total amount you inserted is: {moneyPool}, The change is: {change}");
-            return new Dictionary<int, int>();
-
-        }
-        
     }
 }
